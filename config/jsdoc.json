@@ -1,0 +1,20 @@
+{
+  "sourceType": "module",
+  "recurseDepth": 10,
+  "plugins": ["plugins/markdown"],
+  "source": {
+    "includePattern": ".+\\.js(doc|x)?$",
+    "include": ["./src"],
+    "exclude": ["./node_modules/"]
+  },
+  "opts": {
+    "destination": "docs/",
+    "recurse": true,
+    "verbose": true,
+    "template": "node_modules/docdash"
+  },
+  "templates": {
+      "cleverLinks": false,
+      "monospaceLinks": false
+  }
+}

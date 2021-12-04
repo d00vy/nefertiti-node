@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>api/post.js - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#deleteBot">deleteBot</a></li><li><a href="global.html#downloadNefertiti">downloadNefertiti</a></li><li><a href="global.html#filterMarketsByCurrency">filterMarketsByCurrency</a></li><li><a href="global.html#getAvailableMarkets">getAvailableMarkets</a></li><li><a href="global.html#getCurrentNefVersion">getCurrentNefVersion</a></li><li><a href="global.html#getSupportedExchanges">getSupportedExchanges</a></li><li><a href="global.html#pingBot">pingBot</a></li><li><a href="global.html#pingHub">pingHub</a></li><li><a href="global.html#postBot">postBot</a></li><li><a href="global.html#sendNotificationsTest">sendNotificationsTest</a></li><li><a href="global.html#updateBot">updateBot</a></li><li><a href="global.html#updateNef">updateNef</a></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">api/post.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/* eslint-disable no-use-before-define */
+import fetch from 'node-fetch';
+import { nefertitiURL as nef } from '../functions/variables.js';
+
+/**
+ * @function postBot
+ * @description Issue a POST request to start a bot
+ * @param {string} command - must be either 'sell' or 'buy'
+ * @param {array} api - An array of exchange API key information. Must be in this order: [&lt;exchange>,&lt;api key>, &lt;api secret>,&lt;api passphrase>]
+ * @param {object} args - Object keys are Nefertiti flags with appropriate values: {'mult': 1.05, 'market': 'BTC-USD'}
+ * @returns {Promise&lt;array>} - Returns an array of objects with running bot information. Should be chained with '.then()'
+ * @example
+ *
+ * apis.postBot('buy', ['gdax', 'apiKey123',...], {'mult': 1.05,...})
+ *   .then((res) => {
+ *      console.table(res);
+ * });
+ */
+
+export default async function post(command, api, args) {
+  try {
+    // make sure we're getting all the parameters we need
+    if (!command || !api || !args) {
+      throw new Error('you are missing a mandatory parameter');
+    }
+
+    // use postBodyBuilder() to build an object
+    const postBody = postBodyBuilder(command, api, args);
+
+    // initiate fetch
+    const response = await fetch(`${nef.hostname}:${nef.port}${nef.post}`, {
+      method: 'POST',
+      body: new URLSearchParams({ ...postBody }),
+    }).then((res) => checkResponse(res));
+    return response;
+  } catch (err) {
+    if (err.code === 'ECONNREFUSED') {
+      // eslint-disable-next-line max-len
+      const fetchErr = 'There was an error connecting to Nefertiti. \n \n This usually means the listen server has not started, \n or cannot be reached at \n 127.0.0.1:38700';
+      throw new Error(fetchErr);
+    }
+    throw err;
+  }
+}
+
+/**
+ * @private
+ * @param {string} command must be either 'buy' or 'sell'
+ * @param {array} apiArray - An array of exchange API key information. Must be in this order: [&lt;exchange>,&lt;api key>, &lt;api secret>,&lt;api passphrase>]
+ * @param {object} argsObject - Object keys are Nefertiti flags with appropriate values: {'mult': 1.05, 'market': 'BTC-USD'}
+ * @returns {object} - Returns an object to be used with URLSearchParams()
+ */
+function postBodyBuilder(command, apiArray, argsObject) {
+  if (command !== 'sell' &amp;&amp; command !== 'buy') {
+    throw new Error("'command' has to be either 'sell' or 'buy'");
+  }
+  // build an api object out of our array
+  const api = {
+    exchange: apiArray[0],
+    'api-key': apiArray[1],
+    'api-secret': apiArray[2],
+  };
+
+  // add a passphrase if it's included
+  if (apiArray.length > 3 &amp;&amp; apiArray[3] !== null) {
+    // eslint-disable-next-line prefer-destructuring
+    api['api-passphrase'] = apiArray[3];
+  }
+  const postBody = { command, ...api, ...argsObject };
+
+  return postBody;
+}
+
+/**
+ * @private
+ * @param {Promise.response} response - Response from fetch()
+ * @returns {json} - Returns response.jsoN() if no errors. returns a substring of the error if found
+ */
+function checkResponse(response) {
+  if (!response.ok) {
+    const msg = response.text().then((str) => str.substring(str.indexOf('[')));
+    return msg;
+  }
+  return response.json();
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.7</a> on Tue Nov 23 2021 23:16:46 GMT-0600 (Central Standard Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
+</body>
+</html>

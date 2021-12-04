@@ -1,0 +1,46 @@
+{
+  "name": "nefertiti",
+  "version": "0.0.1",
+  "author": "d00vy <the@d00vy.com> (https://www.d00vy.com)",
+  "description": "ES module to work with Nefertiti crypto trade bot.",
+  "keywords": [
+    "nefertiti",
+    "cryptocurrency",
+    "trading",
+    "bot"
+  ],
+  "license": "GPL-3.0",
+  "main": "index.js",
+  "type": "module",
+  "homepage": "https://github.com/d00vy/nefertiti-node",
+  "funding": {
+    "type": "individual",
+    "url": "https://www.d00vy.com/about"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/d00vy/nefertiti-node.git"
+  },
+  "bugs": {
+    "url": "https://github.com/d00vy/nefertiti-node/issues"
+  },
+  "scripts": {
+    "docs": "jsdoc -c ./config/jsdoc.json",
+    "lint": "eslint --debug"
+  },
+  "dependencies": {
+    "download-github-release": "^0.3.2",
+    "node-fetch": "^3.1.0"
+  },
+  "devDependencies": {
+    "docdash": "^1.2.0",
+    "eslint": "^8.3.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.25.3",
+    "jsdoc": "^3.6.7",
+    "nodemon": "^2.0.15"
+  },
+  "exports": {
+    ".": "./index.js"
+  }
+}
