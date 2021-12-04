@@ -15,8 +15,64 @@
 > **nefertiti-node** is a node.js library of useful tools and utilities for working with Nefertiti crypto trading bot
 
 ## 📚 Documentation
-* [https://github.com/d00vy/nefertiti-node](https://github.com/d00vy/nefertiti-node)
+* [https://d00vy.github.io/nefertiti-node/](https://d00vy.github.io/nefertiti-node/)
 
+## 🛠️ Usage
+This is a pure ES6 module designed to be used in a node.js environment.
+
+```bash
+## Install with npm:
+npm i nefertiti-node
+```
+
+```js
+// Import the plugin to your project:
+import nefertiti from 'nefertiti-node'
+
+// or dynamically import it:
+async function nefertitiNode() {
+  return (nefertiti = await import('nefertiti-node'))
+}
+nefertitiNode().then(nefertiti => console.log(nefertiti))
+
+// Output from console.log(nefertiti)
+  [Module: null prototype] {
+    apis: [Module: null prototype] {
+      deleteBot: [Function: deleteBot],
+      pingBot: [AsyncFunction: pingBot],
+      pingHub: [AsyncFunction: pingHub],
+      postBot: [AsyncFunction: post],
+      updateBot: [AsyncFunction: updateBot]
+    },
+    functions: [Module: null prototype] {
+      filterMarketsByCurrency: [Function: filterMarketsByCurrency],
+      getAvailableMarkets: [Function: getAvailableMarkets],
+      getCurrentNefVersion: [Function: checkNefVersion],
+      getSupportedExchanges: [Function: getSupportedExchanges],
+      sendNotificationsTest: [Function: sendNotificationsTest],
+      startNefListenServer: [Function: startNefListenServer],
+      startNefListenServerAsync: [AsyncFunction: startNefListenServerAsync],
+      updateNef: [Function: updateNef]
+    },
+    helpers: [Module: null prototype] {
+      downloadNefertiti: [Function: downloadNefertitiFromGithub],
+      getArch: [Function: getArch],
+      getPlatform: [Function: getPlatform]
+    },
+    variables: [Module: null prototype] {
+      currentDirectory: 'nefertiti-node',
+      executable: 'nefertiti-node\\bin\\nefertiti_windows_amd64.exe',
+      executableName: 'nefertiti_windows_amd64',
+      executablePath: 'nefertiti-node\\bin',
+      nefertitiURL: {
+        hostname: 'http://127.0.0.1',
+        port: 38700,
+        ping: '/ping',
+        post: '/post'
+      }
+    }
+  }
+```
 
 ## 🤝 Contributing
 
@@ -26,8 +82,8 @@ Feel free to check the [issues page](https://github.com/d00vy/nefertiti-node/iss
 ## 👏 Show your support
 
 Give a ⭐️ if this project helped you! <br />
-Visit my [blog](https://d00vy.com) and get in touch! <br />
-Join the 💬 [Nefertiti Telegram](https://t.me/nefertititradebot)
+Join the 💬 [Nefertiti Telegram](https://t.me/nefertititradebot) <br />
+Visit my [blog](https://d00vy.com) and get in touch!
 
 ## 🤪 Author
 
@@ -39,7 +95,7 @@ Join the 💬 [Nefertiti Telegram](https://t.me/nefertititradebot)
 ## 📝 License
 
 Copyright © 2021 [d00vy](https://github.com/d00vy) | <the@d00vy.com>.<br />
-This project is [GPL3](https://github.com/d00vy/nefertiti-node/blob/master/LICENSE) licensed.
+This project is [GPL-3](https://github.com/d00vy/nefertiti-node/blob/master/LICENSE) licensed.
 
 ***
-_this readme was based on [readme-md-generator](https://github.com/kefranabg/readme-md-generator)_
+*Investing in crypto is high risk. Only use these tools if you understand and accept these risks.*
