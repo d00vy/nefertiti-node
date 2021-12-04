@@ -1,5 +1,5 @@
 {
-  "name": "nefertiti",
+  "name": "nefertiti-node",
   "version": "0.0.1",
   "author": "d00vy <the@d00vy.com> (https://www.d00vy.com)",
   "description": "ES module to work with Nefertiti crypto trade bot.",
@@ -25,6 +25,7 @@
     "url": "https://github.com/d00vy/nefertiti-node/issues"
   },
   "scripts": {
+    "postinstall": "node ./config/postinstall.js",
     "docs": "jsdoc -c ./config/jsdoc.json",
     "lint": "eslint --debug"
   },
