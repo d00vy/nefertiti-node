@@ -28,24 +28,35 @@
 // functions.startNefListenServerAsync();
 
 //* APIS
+// apis.pingHub().then((results) => {
+//   console.log(results, results.length);
+// });
+
+// apis.pingBot(38701).then((results) => {
+//   console.log(results);
+// });
+
+// const api = [
+//   'GDAX',
+//   '18de',
+//   '+m8B',
+//   'jG%',
+// ];
+// const args = { market: 'BTC-USD', price: 10 };
+
 // apis.postBot('sell', api, args).then((res) => {
-//   console.table(res);
+//   console.log(res);
 // });
 
 // apis.postBot('buy', api, args).then((res) => {
-//   console.table(res);
+//   console.log(res);
 // });
 
 // apis.updateBot(38702, { mult: '1.1' }).then((res) => {
 //   console.log(res);
 // });
 
-// apis.pingHub().then((results) => {
-//   // results.forEach((bot) => console.log(bot.port, bot.command));
-//   console.log(results, results.length);
-// });
-
 // const sellBot = await apis.pingBot(38701);
 // console.log(sellBot);
 
-// apis.delete(38702);
+// apis.deleteBot(38702);
