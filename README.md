@@ -15,27 +15,47 @@
 > **nefertiti-node** is a node.js library of useful tools and utilities for working with Nefertiti crypto trading bot
 
 ## 📚 Documentation
-* [https://d00vy.github.io/nefertiti-node/](https://d00vy.github.io/nefertiti-node/)
+
+- [https://d00vy.github.io/nefertiti-node/](https://d00vy.github.io/nefertiti-node/)
 
 ## 🛠️ Usage
-This is a pure ES6 module designed to be used in a node.js environment.
+
+`nefertiti-node` is a hybrid/dual package offering both ESM and CommonJS.
 
 ```bash
 ## Install with npm:
 npm i nefertiti-node
 ```
 
+Use as an ES module:
+
 ```js
 // Import the plugin to your project:
-import nefertiti from 'nefertiti-node'
+import nefertiti from 'nefertiti-node';
 
-// or dynamically import it:
-async function nefertitiNode() {
-  return (nefertiti = await import('nefertiti-node'))
-}
-nefertitiNode().then(nefertiti => console.log(nefertiti))
+// console log the object
+console.log(nefertiti);
 
-// Output from console.log(nefertiti)
+// and use a function:
+nefertiti.functions.getSupportedExchanges();
+```
+
+Use as a CommonJS module:
+
+```js
+// Require the plugin
+const nefertiti = require('nefertiti-node');
+
+// console log the object
+console.log(nefertiti);
+
+// and use a function:
+nefertiti.functions.getSupportedExchanges();
+```
+
+Output from `console.log(nefertiti)`:
+
+```js
   [Module: null prototype] {
     apis: [Module: null prototype] {
       deleteBot: [Function: deleteBot],
@@ -89,13 +109,14 @@ Visit my [blog](https://d00vy.com) and get in touch!
 
 👤 **d00vy | <the@d00vy.com>**
 
-* Website: https://d00vy.com
-* Github: [@d00vy](https://github.com/d00vy)
+- Website: https://d00vy.com
+- Github: [@d00vy](https://github.com/d00vy)
 
 ## 📝 License
 
 Copyright © 2021 [d00vy](https://github.com/d00vy) | <the@d00vy.com>.<br />
 This project is [GPL-3](https://github.com/d00vy/nefertiti-node/blob/master/LICENSE) licensed.
 
-***
-*Investing in crypto is high risk. Only use these tools if you understand and accept these risks.*
+---
+
+_Investing in crypto is high risk. Only use these tools if you understand and accept these risks._
