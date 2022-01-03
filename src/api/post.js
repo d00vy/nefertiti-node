@@ -1,5 +1,5 @@
 /* eslint-disable no-use-before-define */
-import fetch from 'node-fetch';
+import axios from 'axios';
 import { nefertitiURL as nef } from '../functions/variables.js';
 
 /**
@@ -23,23 +23,23 @@ export default async function post(command, api, args) {
     if (!command || !api || !args) {
       throw new Error('you are missing a mandatory parameter');
     }
-
     // use postBodyBuilder() to build an object
     const postBody = postBodyBuilder(command, api, args);
-
+    // convert the body object into url search params
+    const urlBody = new URLSearchParams({ ...postBody });
     // initiate fetch
-    const response = await fetch(`${nef.hostname}:${nef.port}${nef.post}`, {
-      method: 'POST',
-      body: new URLSearchParams({ ...postBody }),
-    }).then((res) => checkResponse(res));
-    return response;
+    const response = await axios.post(`${nef.hostname}:${nef.port}${nef.post}`, urlBody.toString());
+    return response.data;
   } catch (err) {
-    if (err.code === 'ECONNREFUSED') {
-      // eslint-disable-next-line max-len
-      const fetchErr = 'There was an error connecting to Nefertiti. \n \n This usually means the listen server has not started, \n or cannot be reached at \n 127.0.0.1:38700';
-      throw new Error(fetchErr);
-    }
-    throw err;
+    const errObj = {
+      // if there's an error code, we want it. if not, we want to return the error status
+      statusCode: err.toJSON().code ? err.toJSON().code : err.response.status,
+      errorMessage:
+        err.toJSON().code === 'ECONNREFUSED'
+          ? 'There was an error connecting to Nefertiti. This usually means the listen server has not started, or cannot be reached at 127.0.0.1:38700'
+          : stripErrorMessage(err.response.data.toString()),
+    };
+    return errObj;
   }
 }
 
@@ -67,19 +67,15 @@ function postBodyBuilder(command, apiArray, argsObject) {
     api['api-passphrase'] = apiArray[3];
   }
   const postBody = { command, ...api, ...argsObject };
-
   return postBody;
 }
 
 /**
  * @private
- * @param {Promise.response} response - Response from fetch()
- * @returns {json} - Returns response.jsoN() if no errors. returns a substring of the error if found
+ * @param {string} err - error string from axios
+ * @returns {string} - Substring of error message beginning with the first '['
  */
-function checkResponse(response) {
-  if (!response.ok) {
-    const msg = response.text().then((str) => str.substring(str.indexOf('[')));
-    return msg;
-  }
-  return response.json();
+function stripErrorMessage(err) {
+  const msg = err.substring(err.indexOf('['), err.indexOf('\n'));
+  return msg;
 }

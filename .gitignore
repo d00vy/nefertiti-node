@@ -1,5 +1,5 @@
 ### Added project specific
-.eslintrc.json
+.eslintrc.*
 package-lock.json
 bin/nefertiti*
 

@@ -1,6 +1,6 @@
 {
   "name": "nefertiti-node",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": "d00vy <the@d00vy.com> (https://www.d00vy.com)",
   "description": "ES module to work with Nefertiti crypto trade bot.",
   "keywords": [
@@ -10,8 +10,9 @@
     "bot"
   ],
   "license": "GPL-3.0",
-  "main": "index.js",
   "type": "module",
+  "module": "src/index.js",
+  "main": "dist/index.js",
   "homepage": "https://github.com/d00vy/nefertiti-node",
   "funding": {
     "type": "individual",
@@ -26,14 +27,22 @@
   },
   "scripts": {
     "postinstall": "node ./config/postinstall.js",
+    "deleteDirs": "rmdir docs /s/q && rmdir dist /s/q",
     "docs": "jsdoc -c ./config/jsdoc.json",
-    "lint": "eslint --debug"
+    "lint": "eslint src --fix",
+    "babel": "babel --config-file ./config/babel.config.json src --out-dir dist",
+    "build": "npm run lint && npm run babel && npm run docs"
   },
   "dependencies": {
-    "download-github-release": "^0.3.2",
-    "node-fetch": "^3.1.0"
+    "axios": "^0.24.0",
+    "download-github-release": "^0.3.2"
   },
   "devDependencies": {
+    "@babel/cli": "^7.16.0",
+    "@babel/core": "^7.16.5",
+    "@babel/preset-env": "^7.16.5",
+    "babel-plugin-transform-import-meta": "^2.1.0",
+    "core-js": "^3.20.0",
     "docdash": "^1.2.0",
     "eslint": "^8.3.0",
     "eslint-config-airbnb-base": "^15.0.0",
@@ -42,6 +51,7 @@
     "nodemon": "^2.0.15"
   },
   "exports": {
-    ".": "./index.js"
+    "import": "./src/index.js",
+    "require": "./dist/index.js"
   }
 }

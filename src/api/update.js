@@ -1,4 +1,5 @@
-import fetch from 'node-fetch';
+/* eslint-disable no-use-before-define */
+import axios from 'axios';
 import { nefertitiURL as nef } from '../functions/variables.js';
 
 /**
@@ -8,12 +9,12 @@ import { nefertitiURL as nef } from '../functions/variables.js';
  * @param {object} args - Object keys are Nefertiti flags with appropriate values {'mult': 1.05}
  * @returns {Promise<array>} - Returns an array of objects with running bot information. Should be chained with '.then()'
  * @example
- * 
+ *
  *  updateBot(38702, { mult: '1.1' }).then((res) => {
  *    console.log(res)
- *  } 
+ *  }
  *
-*/
+ */
 
 export default async function updateBot(port, args = {}) {
   try {
@@ -21,34 +22,30 @@ export default async function updateBot(port, args = {}) {
     if (!port || !args) {
       throw new Error('you are missing a mandatory parameter');
     }
-
+    // convert args into url search params
+    const urlBody = new URLSearchParams({ ...args });
     // initiate fetch
-    const response = await fetch(`${nef.hostname}:${port}${nef.post}`, {
-      method: 'POST',
-      body: new URLSearchParams({ ...args }),
-    })
-    // eslint-disable-next-line no-use-before-define
-      .then((res) => checkResponse(res));
-
-    return response;
+    const response = await axios.post(`${nef.hostname}:${port}${nef.post}`, urlBody.toString());
+    return response.data;
   } catch (err) {
-    if (err.code === 'ECONNREFUSED') {
-      const fetchErr = 'There was an error connecting to Nefertiti. \n \n This usually means the listen server has not started, \n or cannot be reached at \n 127.0.0.1:38700';
-      throw new Error(fetchErr);
-    }
-    throw err;
+    const errObj = {
+      // if there's an error code, we want it. if not, we want to return the error status
+      statusCode: err.toJSON().code ? err.toJSON().code : err.response.status,
+      errorMessage:
+        err.toJSON().code === 'ECONNREFUSED'
+          ? 'There was an error connecting to Nefertiti. This usually means the listen server has not started, or cannot be reached at 127.0.0.1:38700'
+          : stripErrorMessage(err.response.data.toString()),
+    };
+    return errObj;
   }
 }
 
 /**
  * @private
- * @param {Promise.response} response - Response from fetch()
- * @returns {json} - Returns response.jsoN() if no errors. returns a substring of the error if found
+ * @param {string} err - error string from axios
+ * @returns {string} - Substring of error message beginning with the first '['
  */
-function checkResponse(response) {
-  if (!response.ok) {
-    const msg = response.text().then((str) => str.substring(str.indexOf('[')));
-    return msg;
-  }
-  return response.json();
+function stripErrorMessage(err) {
+  const msg = err.substring(err.indexOf('['), err.indexOf('\n'));
+  return msg;
 }
