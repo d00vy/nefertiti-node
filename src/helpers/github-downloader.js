@@ -1,7 +1,8 @@
 /* eslint-disable no-console */
 import downloadRelease from 'download-github-release';
 import { getPlatform, getArch } from './get-sysinfo.js';
-import { executablePath as outputdir } from '../functions/variables.js';
+import { executablePath as outputdir, executable } from '../functions/variables.js';
+import { chmod } from 'fs';
 
 const user = 'svanas';
 const repo = 'nefertiti';
@@ -35,9 +36,21 @@ export default function downloadNefertitiFromGithub() {
   // eslint-disable-next-line max-len
   downloadRelease(user, repo, outputdir, filterRelease, filterAsset, leaveZipped)
     .then(() => {
-      console.log(
-        `All done! nefertiti_${getPlatform()}_${getArch()} is available in ./${outputdir}`,
-      );
+      const success = `All done! nefertiti_${getPlatform()}_${getArch()} is available in ./${outputdir}`
+
+      // linux requires chmod +x
+      if (getPlatform() === 'linux') {
+        chmod(executable, 0o755, (err) => {
+          if (err) throw err;
+          console.log(success);
+        });
+      }
+
+      // windows works with just a download
+      if (getPlatform() === 'windows') { console.log(success) }
+
+      // TODO macos?
+      if (getPlatform() === 'darwin') { console.log(success) }
     })
     .catch((err) => {
       throw new Error(err);
