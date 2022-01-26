@@ -1,6 +1,6 @@
 <h1 align="center"><a href="https://github.com/d00vy/nefertiti-node">nefertiti-node</a></h1>
 <p align="center">
-  <img alt="Version" src="https://img.shields.io/badge/version-0.0.1-blue.svg?cacheSeconds=2592000" />
+  <img alt="GitHub package.json version" src="https://img.shields.io/github/package-json/v/d00vy/nefertiti-node">
   <a href="https://d00vy.github.io/nefertiti-node/" target="_blank">
     <img alt="Documentation" src="https://img.shields.io/badge/documentation-yes-brightgreen.svg" />
   </a>
